@@ -7,7 +7,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
+    
+}
+
+@property (nonatomic ,retain) UITableView *tableView;
+@property (nonatomic, retain) NSMutableArray *dataArr;
+@property (nonatomic, retain) NSMutableArray *sortedArrForArrays;
+@property (nonatomic, retain) NSMutableArray *sectionHeadsKeys;
+
 
 
 @end
