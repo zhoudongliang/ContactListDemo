@@ -19,6 +19,7 @@
 		7841707C275B04A100B85914 /* test1UITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7841707B275B04A100B85914 /* test1UITestsLaunchTests.m */; };
 		7841708C275B057900B85914 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7841708B275B057900B85914 /* ChineseString.m */; };
 		7841708F275B05F200B85914 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 7841708E275B05F200B85914 /* pinyin.c */; };
+		784A3AF1275B452D0044FE09 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784A3AF0275B452D0044FE09 /* MainViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,8 @@
 		7841708B275B057900B85914 /* ChineseString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChineseString.m; sourceTree = "<group>"; };
 		7841708D275B05F200B85914 /* pinyin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
 		7841708E275B05F200B85914 /* pinyin.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
+		784A3AEF275B452D0044FE09 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		784A3AF0275B452D0044FE09 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +128,8 @@
 				78417061275B04A000B85914 /* LaunchScreen.storyboard */,
 				78417064275B04A000B85914 /* Info.plist */,
 				78417065275B04A000B85914 /* main.m */,
+				784A3AEF275B452D0044FE09 /* MainViewController.h */,
+				784A3AF0275B452D0044FE09 /* MainViewController.m */,
 			);
 			path = test1;
 			sourceTree = "<group>";
@@ -280,6 +285,7 @@
 				7841705B275B049E00B85914 /* ViewController.m in Sources */,
 				7841708C275B057900B85914 /* ChineseString.m in Sources */,
 				78417055275B049E00B85914 /* AppDelegate.m in Sources */,
+				784A3AF1275B452D0044FE09 /* MainViewController.m in Sources */,
 				78417066275B04A000B85914 /* main.m in Sources */,
 				78417058275B049E00B85914 /* SceneDelegate.m in Sources */,
 			);
