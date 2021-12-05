@@ -19,19 +19,194 @@
     [super viewDidLoad];
     
     self.title = @"选择联系人";
-    //[self.navigationController.navigationBar setBarTintColor:[UIColor orangeColor]];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel menu:nil];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone menu:nil];
-    [self.navigationController.navigationBar setTintColor:[UIColor blackColor]];
     
+    UIColor *textColor = [UIColor darkTextColor];
+    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        textColor = [UIColor lightTextColor];
+    }
     
+    //左侧按钮
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+    
+    //右侧按钮
+    //右侧两个按钮,全选和确定
+    UIView *rightButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 50)];
+
+    //全选按钮
+    UIButton *selectAllBtn = [[UIButton alloc] initWithFrame:CGRectMake(6, 0, 75, 44)];
+    [rightButtonView addSubview:selectAllBtn];
+    [selectAllBtn setTitleColor:textColor forState:UIControlStateNormal];
+    [selectAllBtn setTitle:@"Select All" forState:UIControlStateNormal];
+    [selectAllBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    [selectAllBtn addTarget:self action:@selector(selectAllContact) forControlEvents:UIControlEventTouchUpInside];
+
+
+    //确定按钮
+    UIButton *okBtn = [[UIButton alloc] initWithFrame:CGRectMake(70, 0, 75, 44)];
+    [rightButtonView addSubview:okBtn];
+    [okBtn setTitleColor:textColor forState:UIControlStateNormal];
+    [okBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [okBtn addTarget:self action:@selector(goProces) forControlEvents:UIControlEventTouchUpInside];
+
+    //把右侧的两个按钮添加到rightBarButtonItem
+    UIBarButtonItem *rightCunstomButtonView = [[UIBarButtonItem alloc] initWithCustomView:rightButtonView];
+    self.navigationItem.rightBarButtonItem = rightCunstomButtonView;
+    
+    [self.navigationController.navigationBar setTintColor:textColor];//文字颜色
+    
+    //深色模式显示,后续需要增加模式改变的监听!!!
+    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        [self.navigationController.navigationBar setBarTintColor:[UIColor clearColor]];//背景颜色
+    }else{
+        [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];//背景颜色
+    }
     
     NSLog(@"初始化列表");
     [self initData];
     [self createTableView];
 }
 
-#pragma mark create method
+- (void)createTableView {
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+    
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.editing = YES;//进入编辑状态
+    self.tableView.allowsMultipleSelectionDuringEditing = YES;//允许多选
+    
+    [self.view addSubview:self.tableView];
+}
+
+//确定
+- (void) goProces {
+    NSLog(@"确定");
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    
+}
+//全选
+- (void) selectAllContact {
+    NSLog(@"全选");
+    for (int i = 0; i<self.dataArr.count; i++) {
+        NSIndexPath * indexPath = [NSIndexPath indexPathForRow:i inSection:2];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    
+}
+//取消
+- (void) cancel {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark 列表的相关方法
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [[self.sortedArrForArrays objectAtIndex:section] count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [self.sortedArrForArrays count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [self.sectionHeadsKeys objectAtIndex:section];
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return self.sectionHeadsKeys;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *cellId = @"CellId";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        //设置选中后的样式
+        //cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.circle"]];
+        
+    }
+    if ([self.sortedArrForArrays count] > indexPath.section) {
+        NSArray *arr = [self.sortedArrForArrays objectAtIndex:indexPath.section];
+        if ([arr count] > indexPath.row) {
+            ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
+            cell.textLabel.text = str.string;
+        } else {
+            NSLog(@"数组越界");
+        }
+    } else {
+        NSLog(@"分组数组越界");
+    }
+    
+    //cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+
+//对数组重新提取首字母和重新分组 返回已分组好的数据
+- (NSMutableArray *)getChineseStringArr:(NSMutableArray *)arrToSort {
+    NSMutableArray *chineseStringsArray = [NSMutableArray array];
+    for(int i = 0; i < [arrToSort count]; i++) {
+        ChineseString *chineseString = [[ChineseString alloc]init];
+        chineseString.string = [NSString stringWithString:[arrToSort objectAtIndex:i]];
+        
+        if(chineseString.string == nil){
+            chineseString.string = @"";
+        }
+        
+        if(![chineseString.string isEqualToString:@""]){
+            //join the pinYin
+            NSString *pinYinResult = [NSString string];
+            for(int j = 0;j < chineseString.string.length; j++) {
+                NSString *singlePinyinLetter = [[NSString stringWithFormat:@"%c",
+                                                 pinyinFirstLetter([chineseString.string characterAtIndex:j])]uppercaseString];
+                
+                pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
+            }
+            chineseString.pinYin = pinYinResult;
+        } else {
+            chineseString.pinYin = @"";
+        }
+        [chineseStringsArray addObject:chineseString];
+    }
+    
+    //sort the ChineseStringArr by pinYin
+    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"pinYin" ascending:YES]];
+    [chineseStringsArray sortUsingDescriptors:sortDescriptors];
+    
+    NSMutableArray *arrayForArrays = [NSMutableArray array];
+    BOOL checkValueAtIndex= NO;  //flag to check
+    NSMutableArray *TempArrForGrouping = nil;
+
+    for(int index = 0; index < [chineseStringsArray count]; index++)
+    {
+        ChineseString *chineseStr = (ChineseString *)[chineseStringsArray objectAtIndex:index];
+        NSMutableString *strchar= [NSMutableString stringWithString:chineseStr.pinYin];
+        NSString *sr= [strchar substringToIndex:1];
+        //NSLog(@"%@",sr);        //sr containing here the first character of each string
+        if(![self.sectionHeadsKeys containsObject:[sr uppercaseString]])//here I'm checking whether the character already in the selection header keys or not
+        {
+            [self.sectionHeadsKeys addObject:[sr uppercaseString]];
+            TempArrForGrouping = [[NSMutableArray alloc] init];
+            checkValueAtIndex = NO;
+        }
+        if([self.sectionHeadsKeys containsObject:[sr uppercaseString]])
+        {
+           [TempArrForGrouping addObject:[chineseStringsArray objectAtIndex:index]];
+            if(checkValueAtIndex == NO)
+            {
+                [arrayForArrays addObject:TempArrForGrouping];
+                checkValueAtIndex = YES;
+            }
+        }
+    }
+    return arrayForArrays;
+}
 
 - (void)initData {
     //init
@@ -189,114 +364,6 @@
 
     
     self.sortedArrForArrays = [self getChineseStringArr:self.dataArr];
-}
-
-- (void)createTableView {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
-    
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    
-    [self.view addSubview:self.tableView];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return  [[self.sortedArrForArrays objectAtIndex:section] count];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.sortedArrForArrays count];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return [self.sectionHeadsKeys objectAtIndex:section];
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    return self.sectionHeadsKeys;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellId = @"CellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    if ([self.sortedArrForArrays count] > indexPath.section) {
-        NSArray *arr = [self.sortedArrForArrays objectAtIndex:indexPath.section];
-        if ([arr count] > indexPath.row) {
-            ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
-            cell.textLabel.text = str.string;
-        } else {
-            NSLog(@"arr out of range");
-        }
-    } else {
-        NSLog(@"sortedArrForArrays out of range");
-    }
-        
-    return cell;
-}
-
-
-//对数组重新提取首字母和重新分组 返回已分组好的数据
-- (NSMutableArray *)getChineseStringArr:(NSMutableArray *)arrToSort {
-    NSMutableArray *chineseStringsArray = [NSMutableArray array];
-    for(int i = 0; i < [arrToSort count]; i++) {
-        ChineseString *chineseString = [[ChineseString alloc]init];
-        chineseString.string = [NSString stringWithString:[arrToSort objectAtIndex:i]];
-        
-        if(chineseString.string == nil){
-            chineseString.string = @"";
-        }
-        
-        if(![chineseString.string isEqualToString:@""]){
-            //join the pinYin
-            NSString *pinYinResult = [NSString string];
-            for(int j = 0;j < chineseString.string.length; j++) {
-                NSString *singlePinyinLetter = [[NSString stringWithFormat:@"%c",
-                                                 pinyinFirstLetter([chineseString.string characterAtIndex:j])]uppercaseString];
-                
-                pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
-            }
-            chineseString.pinYin = pinYinResult;
-        } else {
-            chineseString.pinYin = @"";
-        }
-        [chineseStringsArray addObject:chineseString];
-    }
-    
-    //sort the ChineseStringArr by pinYin
-    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"pinYin" ascending:YES]];
-    [chineseStringsArray sortUsingDescriptors:sortDescriptors];
-    
-    NSMutableArray *arrayForArrays = [NSMutableArray array];
-    BOOL checkValueAtIndex= NO;  //flag to check
-    NSMutableArray *TempArrForGrouping = nil;
-
-    for(int index = 0; index < [chineseStringsArray count]; index++)
-    {
-        ChineseString *chineseStr = (ChineseString *)[chineseStringsArray objectAtIndex:index];
-        NSMutableString *strchar= [NSMutableString stringWithString:chineseStr.pinYin];
-        NSString *sr= [strchar substringToIndex:1];
-        //NSLog(@"%@",sr);        //sr containing here the first character of each string
-        if(![self.sectionHeadsKeys containsObject:[sr uppercaseString]])//here I'm checking whether the character already in the selection header keys or not
-        {
-            [self.sectionHeadsKeys addObject:[sr uppercaseString]];
-            TempArrForGrouping = [[NSMutableArray alloc] init];
-            checkValueAtIndex = NO;
-        }
-        if([self.sectionHeadsKeys containsObject:[sr uppercaseString]])
-        {
-           [TempArrForGrouping addObject:[chineseStringsArray objectAtIndex:index]];
-            if(checkValueAtIndex == NO)
-            {
-                [arrayForArrays addObject:TempArrForGrouping];
-                checkValueAtIndex = YES;
-            }
-        }
-    }
-    return arrayForArrays;
 }
 
 

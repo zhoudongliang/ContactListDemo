@@ -20,6 +20,8 @@
 		7841708C275B057900B85914 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7841708B275B057900B85914 /* ChineseString.m */; };
 		7841708F275B05F200B85914 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 7841708E275B05F200B85914 /* pinyin.c */; };
 		784A3AF1275B452D0044FE09 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784A3AF0275B452D0044FE09 /* MainViewController.m */; };
+		78B7E551275CF08100B5E5B0 /* ContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B7E54F275CF08100B5E5B0 /* ContactCell.m */; };
+		78B7E552275CF08100B5E5B0 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78B7E550275CF08100B5E5B0 /* ContactCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,9 @@
 		7841708E275B05F200B85914 /* pinyin.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
 		784A3AEF275B452D0044FE09 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		784A3AF0275B452D0044FE09 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		78B7E54E275CF08100B5E5B0 /* ContactCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactCell.h; sourceTree = "<group>"; };
+		78B7E54F275CF08100B5E5B0 /* ContactCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactCell.m; sourceTree = "<group>"; };
+		78B7E550275CF08100B5E5B0 /* ContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +135,9 @@
 				78417065275B04A000B85914 /* main.m */,
 				784A3AEF275B452D0044FE09 /* MainViewController.h */,
 				784A3AF0275B452D0044FE09 /* MainViewController.m */,
+				78B7E54E275CF08100B5E5B0 /* ContactCell.h */,
+				78B7E54F275CF08100B5E5B0 /* ContactCell.m */,
+				78B7E550275CF08100B5E5B0 /* ContactCell.xib */,
 			);
 			path = test1;
 			sourceTree = "<group>";
@@ -254,6 +262,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78B7E552275CF08100B5E5B0 /* ContactCell.xib in Resources */,
 				78417063275B04A000B85914 /* LaunchScreen.storyboard in Resources */,
 				78417060275B04A000B85914 /* Assets.xcassets in Resources */,
 				7841705E275B049E00B85914 /* Main.storyboard in Resources */,
@@ -285,6 +294,7 @@
 				7841705B275B049E00B85914 /* ViewController.m in Sources */,
 				7841708C275B057900B85914 /* ChineseString.m in Sources */,
 				78417055275B049E00B85914 /* AppDelegate.m in Sources */,
+				78B7E551275CF08100B5E5B0 /* ContactCell.m in Sources */,
 				784A3AF1275B452D0044FE09 /* MainViewController.m in Sources */,
 				78417066275B04A000B85914 /* main.m in Sources */,
 				78417058275B049E00B85914 /* SceneDelegate.m in Sources */,
@@ -478,7 +488,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhou.test.contactlist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -505,7 +515,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhou.test.contactlist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
