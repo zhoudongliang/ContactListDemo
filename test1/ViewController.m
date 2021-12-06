@@ -8,6 +8,7 @@
 #import "ViewController.h"
 #import "pinyin.h"
 #import "ChineseString.h"
+#import "ContactCell.h"
 
 @interface ViewController ()
 
@@ -40,7 +41,6 @@
     [selectAllBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     [selectAllBtn addTarget:self action:@selector(selectAllContact) forControlEvents:UIControlEventTouchUpInside];
 
-
     //确定按钮
     UIButton *okBtn = [[UIButton alloc] initWithFrame:CGRectMake(70, 0, 75, 44)];
     [rightButtonView addSubview:okBtn];
@@ -61,6 +61,7 @@
         [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];//背景颜色
     }
     
+    
     NSLog(@"初始化列表");
     [self initData];
     [self createTableView];
@@ -80,16 +81,27 @@
 //确定
 - (void) goProces {
     NSLog(@"确定");
-    [self dismissViewControllerAnimated:YES completion:nil];
+    NSArray<NSIndexPath *> *selectedContacts = self.tableView.indexPathsForSelectedRows;
     
+    for(int i=0;i<selectedContacts.count;i++) {
+        //从分组数组中，获取某组section的某行row数据
+        NSArray * section = self.sortedArrForArrays[selectedContacts[i].section];
+        ChineseString * contact = section[selectedContacts[i].row];
+        
+        NSLog(@"%@",contact.string);//这里需要加上数组越界的判断
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
     
 }
 //全选
 - (void) selectAllContact {
     NSLog(@"全选");
-    for (int i = 0; i<self.dataArr.count; i++) {
-        NSIndexPath * indexPath = [NSIndexPath indexPathForRow:i inSection:2];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    for (int i=0; i<self.sortedArrForArrays.count; i++) {//循环组
+        for (int j = 0; j<[[self.sortedArrForArrays objectAtIndex:i] count]; j++) {//循环每组的行
+            NSIndexPath * indexPath = [NSIndexPath indexPathForRow:j inSection:i];
+            [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];//设置选中状态
+        }
     }
     
 }
@@ -99,37 +111,42 @@
 }
 
 #pragma mark 列表的相关方法
+//每组有几行
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [[self.sortedArrForArrays objectAtIndex:section] count];
 }
-
+//一共有多少组
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.sortedArrForArrays count];
 }
-
+//组名称
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return [self.sectionHeadsKeys objectAtIndex:section];
 }
-
+//组内容数组
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
     return self.sectionHeadsKeys;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellId = @"CellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    ContactCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        //设置选中后的样式
-        //cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.circle"]];
+        //cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell = [[NSBundle mainBundle] loadNibNamed:@"ContactCell" owner:nil options:nil].firstObject;
+        //设置选中后的样式,(无样式，哈哈哈哈，不然加个灰色背景，不好看)
+        cell.selectedBackgroundView = [[UIView alloc] init];
         
     }
+    
+    
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [self.sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
-            cell.textLabel.text = str.string;
+            cell.contactName.text = str.string;
+            [cell.contactImg setImage:[UIImage systemImageNamed:@"lasso"]];
         } else {
             NSLog(@"数组越界");
         }
@@ -137,18 +154,23 @@
         NSLog(@"分组数组越界");
     }
     
-    //cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    //cell.accessoryType = UITableViewCellAccessoryCheckmark;//👉🏻右边打对勾✅
     
     return cell;
 }
 
+//cell的高度，不设置会有警告
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44;
+}
+//选中时的回调
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
 }
 
-
-//对数组重新提取首字母和重新分组 返回已分组好的数据
+//对数组重新提取（拼音）首字母和重新分组，返回已分组好的数据，arrays里面有array，array存储具体行，arrays存储分组
 - (NSMutableArray *)getChineseStringArr:(NSMutableArray *)arrToSort {
     NSMutableArray *chineseStringsArray = [NSMutableArray array];
     for(int i = 0; i < [arrToSort count]; i++) {

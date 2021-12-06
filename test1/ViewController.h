@@ -12,10 +12,10 @@
 }
 
 @property (nonatomic ,retain) UITableView *tableView;
-@property (nonatomic, retain) NSMutableArray *dataArr;
-@property (nonatomic, retain) NSMutableArray *sortedArrForArrays;
-@property (nonatomic, retain) NSMutableArray *sectionHeadsKeys;
-
+@property (nonatomic, retain) NSMutableArray *dataArr;//所有数据
+@property (nonatomic, retain) NSMutableArray *sortedArrForArrays;//以组为单位的数据
+@property (nonatomic, retain) NSMutableArray *sectionHeadsKeys;//分组的标题
+@property (nonatomic, retain) NSMutableArray *selectedIndexArray;//被选中数据的索引
 
 
 @end
