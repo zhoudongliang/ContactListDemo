@@ -9,6 +9,7 @@
 #import "pinyin.h"
 #import "ChineseString.h"
 #import "ContactCell.h"
+#import <Contacts/Contacts.h>
 
 @interface ViewController ()
 
@@ -61,6 +62,20 @@
         [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];//背景颜色
     }
     
+    //申请授权访问通讯录
+    CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+    CNContactStore * store = [[CNContactStore alloc] init];
+    if (status != CNAuthorizationStatusAuthorized) {
+        [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted,NSError * _Nullable error){
+            
+            if (granted) {
+                NSLog(@"授权成功");
+            }else{
+                NSLog(@"授权失败");
+            }
+            
+        }];
+    }
     
     NSLog(@"初始化列表");
     [self initData];
