@@ -65,21 +65,80 @@
     //申请授权访问通讯录
     CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
     CNContactStore * store = [[CNContactStore alloc] init];
-    if (status != CNAuthorizationStatusAuthorized) {
-        [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted,NSError * _Nullable error){
-            
-            if (granted) {
-                NSLog(@"授权成功");
-            }else{
-                NSLog(@"授权失败");
+    switch (status) {
+        case CNAuthorizationStatusNotDetermined://用户还没决定授权
+            {
+                [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted,NSError * _Nullable error){
+                    
+                    if (granted) {
+                        NSLog(@"授权成功");
+                        //初始化数据
+                        
+                        
+                        
+                    }else{
+                        NSLog(@"授权失败");
+                        [self alertReTry];
+                        
+                    }
+                    
+                }];
             }
-            
-        }];
+            break;
+        case CNAuthorizationStatusRestricted://当前手机用户,无权授权
+            {
+                //给用户提示:您没被授权开放通讯录权限,请联系机主
+            }
+            break;
+        case CNAuthorizationStatusDenied://明确拒绝了访问通讯录
+            {
+                NSLog(@"没有权限");
+                //给用户提示:我们现在无权访问您的通讯录,这将无法继续  取消,再次一次
+                
+                
+            }
+            break;
+        case CNAuthorizationStatusAuthorized://已经同意方案通讯录
+            {
+                //初始化数据
+                
+                
+                
+            }
+            break;
+        default:
+            break;
     }
+    
     
     NSLog(@"初始化列表");
     [self initData];
     [self createTableView];
+}
+
+//给用户提示:授权失败,这将无法继续  取消,再次一次
+- (void) alertReTry {
+
+    // 初始化对话框
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                   message:@"授权失败,这将无法继续."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    // 确定注销
+    UIAlertAction *reTry = [UIAlertAction actionWithTitle:@"再试一次"
+                                                    style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction *_Nonnull action) {
+        //再试一次
+        
+        
+    }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消"
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
+
+    [alert addAction:reTry];
+    [alert addAction:cancel];
+    // 弹出对话框
+    [self presentViewController:alert animated:true completion:nil];
 }
 
 - (void)createTableView {
@@ -154,7 +213,6 @@
         cell.selectedBackgroundView = [[UIView alloc] init];
         
     }
-    
     
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [self.sortedArrForArrays objectAtIndex:indexPath.section];
@@ -355,7 +413,6 @@
     [self.dataArr addObject:@"狄奥伦娜"];
     [self.dataArr addObject:@"康斯坦丁十一世"];
     [self.dataArr addObject:@"法扎兰"];
-    [self.dataArr addObject:@"公元人"];
     [self.dataArr addObject:@"云天明"];
     [self.dataArr addObject:@"老李"];
     [self.dataArr addObject:@"张医生"];
