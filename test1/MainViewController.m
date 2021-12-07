@@ -51,8 +51,7 @@
 - (void) createContact {
     
     for (int i=0; i<[self contactString].count; i++) {
-  
-    
+        
         // 1. 创建联系人实例
         CNMutableContact *contact = [[CNMutableContact alloc] init];
         //头像
@@ -304,7 +303,6 @@
     [array addObject:@"冯·诺依曼"];
     [array addObject:@"墨子"];
     [array addObject:@"山杉惠子"];
-    [array addObject:@"政府人员"];
     [array addObject:@"萨伊"];
     [array addObject:@"伽尔宁"];
     [array addObject:@"坎特"];

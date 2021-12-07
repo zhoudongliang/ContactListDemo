@@ -85,8 +85,9 @@
 }
 
 - (void)createTableView {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     
+    CGRect rect =  CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44);
+    self.tableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.editing = YES;//进入编辑状态
@@ -145,9 +146,15 @@
     if ([self.sortedArrForArrays count] > indexPath.section) {
         NSArray *arr = [self.sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
+            
             ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
             cell.contactName.text = str.string;
             [cell.contactImg setImage:[UIImage systemImageNamed:@"lasso"]];
+            
+            
+            
+            
+            
         } else {
             NSLog(@"数组越界");
         }
@@ -178,7 +185,18 @@
         ChineseString *chineseString = [[ChineseString alloc]init];
         //chineseString.string = [NSString stringWithString:[arrToSort objectAtIndex:i]];
         CNContact *contact = [arrToSort objectAtIndex:i];
-        chineseString.string = [NSString stringWithFormat:@"%@%@",contact.familyName,contact.givenName];
+        
+        //如果是英文名,中间加个空格
+        NSString * familyName = @"";
+        if (contact.familyName.length > 0) {
+            unichar c = [contact.familyName characterAtIndex:contact.familyName.length-1];
+            if (isalpha(c) || ispunct(c)) {//如果说是英文字符或相关符号
+                familyName = [NSString stringWithFormat:@"%@%@",contact.familyName,@" "];
+            }
+        }
+        
+        chineseString.string = [NSString stringWithFormat:@"%@%@",familyName,contact.givenName];
+        
         if(chineseString.string == nil){
             chineseString.string = @"";
         }
@@ -278,6 +296,5 @@
     
     self.sortedArrForArrays = [self getChineseStringArr:self.dataArr];
 }
-
 
 @end
