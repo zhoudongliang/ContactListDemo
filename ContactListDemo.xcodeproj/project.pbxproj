@@ -18,7 +18,7 @@
 		78417070275B04A100B85914 /* test1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7841706F275B04A100B85914 /* test1Tests.m */; };
 		7841707A275B04A100B85914 /* test1UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78417079275B04A100B85914 /* test1UITests.m */; };
 		7841707C275B04A100B85914 /* test1UITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7841707B275B04A100B85914 /* test1UITestsLaunchTests.m */; };
-		7841708C275B057900B85914 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7841708B275B057900B85914 /* ChineseString.m */; };
+		7841708C275B057900B85914 /* MyContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 7841708B275B057900B85914 /* MyContact.m */; };
 		7841708F275B05F200B85914 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 7841708E275B05F200B85914 /* pinyin.c */; };
 		784A3AF1275B452D0044FE09 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784A3AF0275B452D0044FE09 /* MainViewController.m */; };
 		78B7E551275CF08100B5E5B0 /* ContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B7E54F275CF08100B5E5B0 /* ContactCell.m */; };
@@ -61,8 +61,8 @@
 		78417075275B04A100B85914 /* ContactListDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactListDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78417079275B04A100B85914 /* test1UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test1UITests.m; sourceTree = "<group>"; };
 		7841707B275B04A100B85914 /* test1UITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test1UITestsLaunchTests.m; sourceTree = "<group>"; };
-		7841708A275B057900B85914 /* ChineseString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChineseString.h; sourceTree = "<group>"; };
-		7841708B275B057900B85914 /* ChineseString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChineseString.m; sourceTree = "<group>"; };
+		7841708A275B057900B85914 /* MyContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyContact.h; sourceTree = "<group>"; };
+		7841708B275B057900B85914 /* MyContact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyContact.m; sourceTree = "<group>"; };
 		7841708D275B05F200B85914 /* pinyin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
 		7841708E275B05F200B85914 /* pinyin.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
 		784A3AEF275B452D0044FE09 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -130,8 +130,8 @@
 		78417052275B049E00B85914 /* test1 */ = {
 			isa = PBXGroup;
 			children = (
-				7841708A275B057900B85914 /* ChineseString.h */,
-				7841708B275B057900B85914 /* ChineseString.m */,
+				7841708A275B057900B85914 /* MyContact.h */,
+				7841708B275B057900B85914 /* MyContact.m */,
 				7841708D275B05F200B85914 /* pinyin.h */,
 				7841708E275B05F200B85914 /* pinyin.c */,
 				78417053275B049E00B85914 /* AppDelegate.h */,
@@ -304,7 +304,7 @@
 			files = (
 				7841708F275B05F200B85914 /* pinyin.c in Sources */,
 				7841705B275B049E00B85914 /* ViewController.m in Sources */,
-				7841708C275B057900B85914 /* ChineseString.m in Sources */,
+				7841708C275B057900B85914 /* MyContact.m in Sources */,
 				78417055275B049E00B85914 /* AppDelegate.m in Sources */,
 				78B7E551275CF08100B5E5B0 /* ContactCell.m in Sources */,
 				784A3AF1275B452D0044FE09 /* MainViewController.m in Sources */,

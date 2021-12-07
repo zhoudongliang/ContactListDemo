@@ -1,13 +1,13 @@
 //
-//  ChineseString.m
+//  MyContact.m
 //  test1
 //
 //  Created by 周栋梁 on 2021/12/4.
 //
 
-#import "ChineseString.h"
+#import "MyContact.h"
 
-@implementation ChineseString
+@implementation MyContact
 
 - (id)init {
     if (self = [super init]) {

@@ -7,7 +7,7 @@
 
 #import "ViewController.h"
 #import "pinyin.h"
-#import "ChineseString.h"
+#import "MyContact.h"
 #import "ContactCell.h"
 #import <Contacts/Contacts.h>
 
@@ -104,9 +104,9 @@
     for(int i=0;i<selectedContacts.count;i++) {
         //从分组数组中，获取某组section的某行row数据
         NSArray * section = self.sortedArrForArrays[selectedContacts[i].section];
-        ChineseString * contact = section[selectedContacts[i].row];
+        MyContact * contact = section[selectedContacts[i].row];
         
-        NSLog(@"%@",contact.string);//这里需要加上数组越界的判断
+        NSLog(@"%@",contact.contactString);//这里需要加上数组越界的判断
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -147,13 +147,20 @@
         NSArray *arr = [self.sortedArrForArrays objectAtIndex:indexPath.section];
         if ([arr count] > indexPath.row) {
             
-            ChineseString *str = (ChineseString *) [arr objectAtIndex:indexPath.row];
-            cell.contactName.text = str.string;
-            [cell.contactImg setImage:[UIImage systemImageNamed:@"lasso"]];
+            MyContact *contact = (MyContact *)[arr objectAtIndex:indexPath.row];
+            cell.contactName.text = contact.contactString;
+            cell.contactImg.layer.masksToBounds = YES;
+            cell.contactImg.layer.cornerRadius = cell.contactImg.frame.size.width/2;//头像设置成圆形
+            if (contact.contact.thumbnailImageData != nil) {
+                [cell.contactImg setImage:[UIImage imageWithData:contact.contact.thumbnailImageData]];
+            }else{
+                //设置成以首字母为图片的头像
+                
+                
+            }
             
             
-            
-            
+
             
         } else {
             NSLog(@"数组越界");
@@ -180,11 +187,12 @@
 
 //对数组重新提取（拼音）首字母和重新分组，返回已分组好的数据，arrays里面有array，array存储具体行，arrays存储分组
 - (NSMutableArray *)getChineseStringArr:(NSMutableArray *)arrToSort {
-    NSMutableArray *chineseStringsArray = [NSMutableArray array];
+    NSMutableArray *myContactsArray = [NSMutableArray array];
     for(int i = 0; i < [arrToSort count]; i++) {
-        ChineseString *chineseString = [[ChineseString alloc]init];
-        //chineseString.string = [NSString stringWithString:[arrToSort objectAtIndex:i]];
+        MyContact *myContact = [[MyContact alloc] init];
         CNContact *contact = [arrToSort objectAtIndex:i];
+        //添加联系人到局部联系人实例中
+        myContact.contact = contact;
         
         //如果是英文名,中间加个空格
         NSString * familyName = @"";
@@ -195,41 +203,41 @@
             }
         }
         
-        chineseString.string = [NSString stringWithFormat:@"%@%@",familyName,contact.givenName];
+        myContact.contactString = [NSString stringWithFormat:@"%@%@",familyName,contact.givenName];
         
-        if(chineseString.string == nil){
-            chineseString.string = @"";
+        if(myContact.contactString == nil){
+            myContact.contactString = @"";
         }
         
-        if(![chineseString.string isEqualToString:@""]){
+        if(![myContact.contactString isEqualToString:@""]){
             //join the pinYin
             NSString *pinYinResult = [NSString string];
-            for(int j = 0;j < chineseString.string.length; j++) {
+            for(int j = 0;j < myContact.contactString.length; j++) {
                 NSString *singlePinyinLetter = [[NSString stringWithFormat:@"%c",
-                                                 pinyinFirstLetter([chineseString.string characterAtIndex:j])] uppercaseString];
-                
+                                                 pinyinFirstLetter([myContact.contactString characterAtIndex:j])] uppercaseString];
                 pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
             }
-            chineseString.pinYin = pinYinResult;
+            myContact.contactPinYin = pinYinResult;
         } else {
-            chineseString.pinYin = @"";
+            myContact.contactPinYin = @"";
         }
-        [chineseStringsArray addObject:chineseString];
+        
+        [myContactsArray addObject:myContact];
     }
     
     //sort the ChineseStringArr by pinYin
-    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"pinYin" ascending:YES]];
-    [chineseStringsArray sortUsingDescriptors:sortDescriptors];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"contactPinYin" ascending:YES]];
+    [myContactsArray sortUsingDescriptors:sortDescriptors];
     
     NSMutableArray *arrayForArrays = [NSMutableArray array];
     BOOL checkValueAtIndex= NO;  //flag to check
     NSMutableArray *TempArrForGrouping = nil;
 
-    for(int index = 0; index < [chineseStringsArray count]; index++)
+    for(int index = 0; index < [myContactsArray count]; index++)
     {
-        ChineseString *chineseStr = (ChineseString *)[chineseStringsArray objectAtIndex:index];
-        NSMutableString *strchar= [NSMutableString stringWithString:chineseStr.pinYin];
-        NSString *sr= [strchar substringToIndex:1];
+        MyContact *contact = (MyContact *)[myContactsArray objectAtIndex:index];
+        NSMutableString *strchar = [NSMutableString stringWithString:contact.contactPinYin];
+        NSString *sr = [strchar substringToIndex:1];
         //NSLog(@"%@",sr);        //sr containing here the first character of each string
         if(![self.sectionHeadsKeys containsObject:[sr uppercaseString]])//here I'm checking whether the character already in the selection header keys or not
         {
@@ -239,7 +247,7 @@
         }
         if([self.sectionHeadsKeys containsObject:[sr uppercaseString]])
         {
-           [TempArrForGrouping addObject:[chineseStringsArray objectAtIndex:index]];
+           [TempArrForGrouping addObject:[myContactsArray objectAtIndex:index]];
             if(checkValueAtIndex == NO)
             {
                 [arrayForArrays addObject:TempArrForGrouping];
@@ -247,6 +255,7 @@
             }
         }
     }
+    
     return arrayForArrays;
 }
 
