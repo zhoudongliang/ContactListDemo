@@ -176,8 +176,9 @@
     NSMutableArray *chineseStringsArray = [NSMutableArray array];
     for(int i = 0; i < [arrToSort count]; i++) {
         ChineseString *chineseString = [[ChineseString alloc]init];
-        chineseString.string = [NSString stringWithString:[arrToSort objectAtIndex:i]];
-        
+        //chineseString.string = [NSString stringWithString:[arrToSort objectAtIndex:i]];
+        CNContact *contact = [arrToSort objectAtIndex:i];
+        chineseString.string = [NSString stringWithFormat:@"%@%@",contact.familyName,contact.givenName];
         if(chineseString.string == nil){
             chineseString.string = @"";
         }
@@ -187,7 +188,7 @@
             NSString *pinYinResult = [NSString string];
             for(int j = 0;j < chineseString.string.length; j++) {
                 NSString *singlePinyinLetter = [[NSString stringWithFormat:@"%c",
-                                                 pinyinFirstLetter([chineseString.string characterAtIndex:j])]uppercaseString];
+                                                 pinyinFirstLetter([chineseString.string characterAtIndex:j])] uppercaseString];
                 
                 pinYinResult = [pinYinResult stringByAppendingString:singlePinyinLetter];
             }
@@ -233,6 +234,12 @@
 
 - (void)initData {
     
+    // 初始化数组
+    self.dataArr = [[NSMutableArray alloc] init];
+    self.sortedArrForArrays = [[NSMutableArray alloc] init];
+    self.sectionHeadsKeys = [[NSMutableArray alloc] init];
+    
+    // ---  下面是获取通讯录联系人信息  ---
     // 1.获取授权状态
     CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
     // 2.判断授权状态,如果不是已经授权,则直接返回
@@ -252,46 +259,22 @@
     // 5.遍历所有的联系人
     [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
         //获取联系人信息
-        NSString *contactId = contact.identifier;
-        NSString *lastname = contact.familyName;
-        NSString *firstname = contact.givenName;
-        NSData *imageDate = contact.imageData;
-        NSData *thumImageDate = contact.thumbnailImageData;
-        BOOL imgageAvailable = contact.imageDataAvailable;
+        /*
+         NSString *contactId = contact.identifier;
+         NSString *lastname = contact.familyName;
+         NSString *firstname = contact.givenName;
+         NSData *imageDate = contact.imageData;
+         NSData *thumImageDate = contact.thumbnailImageData;
+         BOOL imgageAvailable = contact.imageDataAvailable;
         
-        UIImage * img1 = [UIImage imageWithData:imageDate];
-        UIImage * img2 = [UIImage imageWithData:thumImageDate];
+         UIImage * img1 = [UIImage imageWithData:imageDate];
+         UIImage * img2 = [UIImage imageWithData:thumImageDate];
+         */
         
-        //NSLog(@"%@ %@ %@ %@", firstname,lastname);
-
+        //将通讯录保存到数据
+        [self.dataArr addObject:contact];
+        
     }];
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //init
-    self.dataArr = [[NSMutableArray alloc] init];
-    self.sortedArrForArrays = [[NSMutableArray alloc] init];
-    self.sectionHeadsKeys = [[NSMutableArray alloc] init];
-    
-    
-
     
     self.sortedArrForArrays = [self getChineseStringArr:self.dataArr];
 }
