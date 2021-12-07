@@ -78,7 +78,6 @@
             [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];//设置选中状态
         }
     }
-    
 }
 //取消
 - (void) cancel {
@@ -233,157 +232,65 @@
 }
 
 - (void)initData {
+    
+    // 1.获取授权状态
+    CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+    // 2.判断授权状态,如果不是已经授权,则直接返回
+    if (status != CNAuthorizationStatusAuthorized) return;
+    // 3.创建通信录对象
+    CNContactStore *contactStore = [[CNContactStore alloc] init];
+    // 4.创建获取通信录的请求对象
+    // 4.1.拿到所有打算获取的属性对应的key
+    NSArray *keys = @[CNContactIdentifierKey,//唯一标识
+                      CNContactGivenNameKey,//名字
+                      CNContactFamilyNameKey,//姓氏
+                      CNContactImageDataKey,//头像图片
+                      CNContactThumbnailImageDataKey,//缩略图
+                      CNContactImageDataAvailableKey];//是否有头像标识
+    // 4.2.创建CNContactFetchRequest对象
+    CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:keys];
+    // 5.遍历所有的联系人
+    [contactStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
+        //获取联系人信息
+        NSString *contactId = contact.identifier;
+        NSString *lastname = contact.familyName;
+        NSString *firstname = contact.givenName;
+        NSData *imageDate = contact.imageData;
+        NSData *thumImageDate = contact.thumbnailImageData;
+        BOOL imgageAvailable = contact.imageDataAvailable;
+        
+        UIImage * img1 = [UIImage imageWithData:imageDate];
+        UIImage * img2 = [UIImage imageWithData:thumImageDate];
+        
+        //NSLog(@"%@ %@ %@ %@", firstname,lastname);
+
+    }];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //init
     self.dataArr = [[NSMutableArray alloc] init];
     self.sortedArrForArrays = [[NSMutableArray alloc] init];
     self.sectionHeadsKeys = [[NSMutableArray alloc] init];
     
-    //add test data
-    [self.dataArr addObject:@"Steve Jobs"];
-    [self.dataArr addObject:@"Einstein"];
-    [self.dataArr addObject:@"John von Neumann"];
-    [self.dataArr addObject:@"Tim Cook"];
-    [self.dataArr addObject:@"汪淼"];
-    [self.dataArr addObject:@"史强"];
-    [self.dataArr addObject:@"丁仪"];
-    [self.dataArr addObject:@"常伟思"];
-    [self.dataArr addObject:@"杨冬"];
-    [self.dataArr addObject:@"魏成"];
-    [self.dataArr addObject:@"沙瑞山"];
-    [self.dataArr addObject:@"徐冰冰"];
-    [self.dataArr addObject:@"斯坦顿"];
-    [self.dataArr addObject:@"林云"];
-    [self.dataArr addObject:@"李瑶"];
-    [self.dataArr addObject:@"豆豆"];
-    [self.dataArr addObject:@"楠楠"];
-    [self.dataArr addObject:@"洋洋"];
-    [self.dataArr addObject:@"咪咪"];
-    [self.dataArr addObject:@"叶文洁"];
-    [self.dataArr addObject:@"杨卫宁"];
-    [self.dataArr addObject:@"雷志成"];
-    [self.dataArr addObject:@"叶文雪"];
-    [self.dataArr addObject:@"叶哲泰"];
-    [self.dataArr addObject:@"邵琳"];
-    [self.dataArr addObject:@"白沐霖"];
-    [self.dataArr addObject:@"程丽华"];
-    [self.dataArr addObject:@"红卫兵1"];
-    [self.dataArr addObject:@"红卫兵2"];
-    [self.dataArr addObject:@"红卫兵3"];
-    [self.dataArr addObject:@"红卫兵4"];
-    [self.dataArr addObject:@"阮雯"];
-    [self.dataArr addObject:@"马钢"];
-    [self.dataArr addObject:@"齐猎头"];
-    [self.dataArr addObject:@"大凤"];
-    [self.dataArr addObject:@"伊文斯"];
-    [self.dataArr addObject:@"潘寒"];
-    [self.dataArr addObject:@"申玉菲"];
-    [self.dataArr addObject:@"拉菲尔"];
-    [self.dataArr addObject:@"核弹女孩"];
-    [self.dataArr addObject:@"元首"];
-    [self.dataArr addObject:@"1379号监听员"];
-    [self.dataArr addObject:@"科学执政官"];
-    [self.dataArr addObject:@"军事执政官"];
-    [self.dataArr addObject:@"农业执政官"];
-    [self.dataArr addObject:@"工业执政官"];
-    [self.dataArr addObject:@"文教执政官"];
-    [self.dataArr addObject:@"罗辑"];
-    [self.dataArr addObject:@"庄颜"];
-    [self.dataArr addObject:@"弗雷德里克·泰勒"];
-    [self.dataArr addObject:@"曼努尔·雷迪亚兹"];
-    [self.dataArr addObject:@"比尔·希恩斯"];
-    [self.dataArr addObject:@"冯·诺依曼"];
-    [self.dataArr addObject:@"墨子"];
-    [self.dataArr addObject:@"山杉惠子"];
-    [self.dataArr addObject:@"政府人员"];
-    [self.dataArr addObject:@"萨伊"];
-    [self.dataArr addObject:@"伽尔宁"];
-    [self.dataArr addObject:@"坎特"];
-    [self.dataArr addObject:@"张翔"];
-    [self.dataArr addObject:@"井上宏一"];
-    [self.dataArr addObject:@"加尔诺夫"];
-    [self.dataArr addObject:@"本·乔纳森"];
-    [self.dataArr addObject:@"章北海"];
-    [self.dataArr addObject:@"吴岳"];
-    [self.dataArr addObject:@"斐兹罗将军"];
-    [self.dataArr addObject:@"雷德尔"];
-    [self.dataArr addObject:@"琼斯"];
-    [self.dataArr addObject:@"威尔逊"];
-    [self.dataArr addObject:@"凯瑟琳"];
-    [self.dataArr addObject:@"林格"];
-    [self.dataArr addObject:@"哈里斯"];
-    [self.dataArr addObject:@"艾伦"];
-    [self.dataArr addObject:@"麦克"];
-    [self.dataArr addObject:@"威廉·科兹莫"];
-    [self.dataArr addObject:@"褚岩"];
-    [self.dataArr addObject:@"东方延绪"];
-    [self.dataArr addObject:@"列文"];
-    [self.dataArr addObject:@"井上明"];
-    [self.dataArr addObject:@"蓝西"];
-    [self.dataArr addObject:@"赵鑫"];
-    [self.dataArr addObject:@"李维"];
-    [self.dataArr addObject:@"西子"];
-    [self.dataArr addObject:@"斯科特"];
-    [self.dataArr addObject:@"塞巴斯蒂安·史耐德"];
-    [self.dataArr addObject:@"鲍里斯·洛文斯基"];
-    [self.dataArr addObject:@"卡尔·乔伊娜"];
-    [self.dataArr addObject:@"白蓉"];
-    [self.dataArr addObject:@"张援朝"];
-    [self.dataArr addObject:@"张为明"];
-    [self.dataArr addObject:@"晓虹"];
-    [self.dataArr addObject:@"张延"];
-    [self.dataArr addObject:@"杨晋文"];
-    [self.dataArr addObject:@"苗福全"];
-    [self.dataArr addObject:@"史晓明"];
-    [self.dataArr addObject:@"熊文"];
-    [self.dataArr addObject:@"郭正明"];
-    [self.dataArr addObject:@"肯博士"];
-    [self.dataArr addObject:@"罗宾逊将军"];
-    [self.dataArr addObject:@"程心"];
-    [self.dataArr addObject:@"狄奥伦娜"];
-    [self.dataArr addObject:@"康斯坦丁十一世"];
-    [self.dataArr addObject:@"法扎兰"];
-    [self.dataArr addObject:@"云天明"];
-    [self.dataArr addObject:@"老李"];
-    [self.dataArr addObject:@"张医生"];
-    [self.dataArr addObject:@"胡文"];
-    [self.dataArr addObject:@"何博士"];
-    [self.dataArr addObject:@"托马斯·维德"];
-    [self.dataArr addObject:@"米哈伊尔·瓦季姆"];
-    [self.dataArr addObject:@"于维民"];
-    [self.dataArr addObject:@"柯曼琳"];
-    [self.dataArr addObject:@"乔依娜"];
-    [self.dataArr addObject:@"毕云峰"];
-    [self.dataArr addObject:@"曹彬"];
-    [self.dataArr addObject:@"安东诺夫"];
-    [self.dataArr addObject:@"A·J·霍普金斯"];
-    [self.dataArr addObject:@"艾AA"];
-    [self.dataArr addObject:@"智子"];
-    [self.dataArr addObject:@"关一帆"];
-    [self.dataArr addObject:@"约瑟夫·莫沃维奇"];
-    [self.dataArr addObject:@"韦斯特"];
-    [self.dataArr addObject:@"戴文"];
-    [self.dataArr addObject:@"伊万"];
-    [self.dataArr addObject:@"薇拉"];
-    [self.dataArr addObject:@"艾克"];
-    [self.dataArr addObject:@"刘晓明"];
-    [self.dataArr addObject:@"詹姆斯·亨特"];
-    [self.dataArr addObject:@"秋原玲子"];
-    [self.dataArr addObject:@"朴义君"];
-    [self.dataArr addObject:@"卓文"];
-    [self.dataArr addObject:@"弗雷斯"];
-    [self.dataArr addObject:@"深水王子"];
-    [self.dataArr addObject:@"露珠公主"];
-    [self.dataArr addObject:@"针眼画师"];
-    [self.dataArr addObject:@"空灵画师"];
-    [self.dataArr addObject:@"长帆"];
-    [self.dataArr addObject:@"巴勒莫"];
-    [self.dataArr addObject:@"杰森"];
-    [self.dataArr addObject:@"威纳尔"];
-    [self.dataArr addObject:@"阿历克塞·瓦西里"];
-    [self.dataArr addObject:@"歌者"];
-    [self.dataArr addObject:@"高way"];
-    [self.dataArr addObject:@"布莱尔"];
-    [self.dataArr addObject:@"白Ice"];
+    
 
     
     self.sortedArrForArrays = [self getChineseStringArr:self.dataArr];
