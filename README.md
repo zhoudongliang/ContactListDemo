@@ -10,7 +10,8 @@
 
 
 Imitation address book list demo</br></br>
-The specific functions are as follows:</br></br>
+The specific functions are as follows:</br>
+
 0. Address book authorization related</br>
 1. Create a contact in the address book (I only created the name here, but didn’t write the others)</br>
 2. Query the contact person (I only query the name and avatar here, the others are commented out)</br>
