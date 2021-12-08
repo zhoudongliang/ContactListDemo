@@ -155,13 +155,14 @@
                 [cell.contactImg setImage:[UIImage imageWithData:contact.contact.thumbnailImageData]];
             }else{
                 //设置成以首字母为图片的头像
-                
-                
+                if (contact.contactString.length > 0) {
+                    //NSLog(@"%@",[contact.contactString substringToIndex:1]);
+                    
+                    UIImage * img = [self imageForText:[contact.contactString substringToIndex:1]];
+                    [cell.contactImg setBackgroundColor:[UIColor systemGray5Color]];
+                    [cell.contactImg setImage:img];
+                }
             }
-            
-            
-
-            
         } else {
             NSLog(@"数组越界");
         }
@@ -195,7 +196,7 @@
         myContact.contact = contact;
         
         //如果是英文名,中间加个空格
-        NSString * familyName = @"";
+        NSString * familyName = contact.familyName;
         if (contact.familyName.length > 0) {
             unichar c = [contact.familyName characterAtIndex:contact.familyName.length-1];
             if (isalpha(c) || ispunct(c)) {//如果说是英文字符或相关符号
@@ -304,6 +305,42 @@
     }];
     
     self.sortedArrForArrays = [self getChineseStringArr:self.dataArr];
+}
+
+//文字（emoji）转图片
+-(UIImage *)imageForText:(NSString *)text {
+    
+    CGFloat canvasSize = 30.0;
+    
+    CGSize size  = CGSizeMake(canvasSize,canvasSize);
+    // check if UIGraphicsBeginImageContextWithOptions is available (iOS is 4.0+)
+    if (&UIGraphicsBeginImageContextWithOptions != NULL){
+        UIGraphicsBeginImageContextWithOptions(size,NO,0.0);
+    }
+    
+    // optional: add a shadow, to avoid clipping the shadow you should make the context size bigger
+    //
+    // CGContextRef ctx = UIGraphicsGetCurrentContext();
+    // CGContextSetShadowWithColor(ctx, CGSizeMake(1.0, 1.0), 5.0, [[UIColor grayColor] CGColor]);
+    
+    // draw in context, you can use also drawInRect:withFont:
+    //[text drawAtPoint:CGPointMake(0.0, 40.0) withFont:font];
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(ctx, [[UIColor clearColor] CGColor]);//背景色
+    CGContextFillRect(ctx, CGRectMake(0, 0, canvasSize,canvasSize));
+    
+    CGContextSetFillColorWithColor(ctx, [[UIColor blackColor] CGColor]);
+    
+    //获取文字尺寸
+    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
+    //让文字居中显示
+    [text drawInRect:CGRectMake((canvasSize - textSize.width) / 2, (canvasSize - textSize.height) / 2, canvasSize,canvasSize) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
+    
+    // transfer image
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 @end
