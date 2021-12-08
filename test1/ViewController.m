@@ -157,8 +157,12 @@
                 //设置成以首字母为图片的头像
                 if (contact.contactString.length > 0) {
                     //NSLog(@"%@",[contact.contactString substringToIndex:1]);
+                    UIImage * img = [self imageForText:[contact.contactString substringToIndex:1] textColor:[UIColor blackColor]];//默认是黑色字体
+                    //深色模式显示,后续需要增加模式改变的监听!!!
+                    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+                         img = [self imageForText:[contact.contactString substringToIndex:1] textColor:[UIColor whiteColor]];
+                    }
                     
-                    UIImage * img = [self imageForText:[contact.contactString substringToIndex:1]];
                     [cell.contactImg setBackgroundColor:[UIColor systemGray5Color]];
                     [cell.contactImg setImage:img];
                 }
@@ -308,7 +312,7 @@
 }
 
 //文字（emoji）转图片
--(UIImage *)imageForText:(NSString *)text {
+-(UIImage *)imageForText:(NSString *)text textColor:(UIColor *) textColor{
     
     CGFloat canvasSize = 30.0;
     
@@ -334,7 +338,7 @@
     //获取文字尺寸
     CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
     //让文字居中显示
-    [text drawInRect:CGRectMake((canvasSize - textSize.width) / 2, (canvasSize - textSize.height) / 2, canvasSize,canvasSize) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
+    [text drawInRect:CGRectMake((canvasSize - textSize.width) / 2, (canvasSize - textSize.height) / 2, canvasSize,canvasSize) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:textColor}];
     
     // transfer image
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
