@@ -7,6 +7,7 @@
 
 #import "MainViewController.h"
 #import "ViewController.h"
+#import "SelectEmojiViewController.h"
 
 @interface MainViewController ()
 
@@ -31,6 +32,12 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (IBAction)open5:(id)sender {
+    SelectEmojiViewController * vc = [[SelectEmojiViewController alloc] init];
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:navi animated:YES completion:nil];
+}
 
 - (IBAction)create:(id)sender {
     //申请授权访问通讯录，并创建联系人

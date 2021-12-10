@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		781FF88D276338E3002B0820 /* EmojiModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 781FF88C276338E3002B0820 /* EmojiModel.m */; };
+		781FF89627633BFE002B0820 /* EmojiCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 781FF89427633BFE002B0820 /* EmojiCollectionViewCell.m */; };
+		781FF89727633BFE002B0820 /* EmojiCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 781FF89527633BFE002B0820 /* EmojiCollectionViewCell.xib */; };
+		781FF89A27633CA7002B0820 /* SelectEmojiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 781FF89927633CA7002B0820 /* SelectEmojiViewController.m */; };
 		783FD0FE275DFFE6000DF59E /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 783FD0FD275DFFE6000DF59E /* Contacts.framework */; };
 		78417055275B049E00B85914 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78417054275B049E00B85914 /* AppDelegate.m */; };
 		78417058275B049E00B85914 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78417057275B049E00B85914 /* SceneDelegate.m */; };
@@ -43,6 +47,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		781FF88B276338E3002B0820 /* EmojiModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmojiModel.h; sourceTree = "<group>"; };
+		781FF88C276338E3002B0820 /* EmojiModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmojiModel.m; sourceTree = "<group>"; };
+		781FF89327633BFE002B0820 /* EmojiCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmojiCollectionViewCell.h; sourceTree = "<group>"; };
+		781FF89427633BFE002B0820 /* EmojiCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmojiCollectionViewCell.m; sourceTree = "<group>"; };
+		781FF89527633BFE002B0820 /* EmojiCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmojiCollectionViewCell.xib; sourceTree = "<group>"; };
+		781FF89827633CA7002B0820 /* SelectEmojiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectEmojiViewController.h; sourceTree = "<group>"; };
+		781FF89927633CA7002B0820 /* SelectEmojiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectEmojiViewController.m; sourceTree = "<group>"; };
 		783FD0FD275DFFE6000DF59E /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		78417050275B049E00B85914 /* ContactListDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactListDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78417053275B049E00B85914 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -150,6 +161,13 @@
 				78B7E54E275CF08100B5E5B0 /* ContactCell.h */,
 				78B7E54F275CF08100B5E5B0 /* ContactCell.m */,
 				78B7E550275CF08100B5E5B0 /* ContactCell.xib */,
+				781FF88B276338E3002B0820 /* EmojiModel.h */,
+				781FF88C276338E3002B0820 /* EmojiModel.m */,
+				781FF89327633BFE002B0820 /* EmojiCollectionViewCell.h */,
+				781FF89427633BFE002B0820 /* EmojiCollectionViewCell.m */,
+				781FF89527633BFE002B0820 /* EmojiCollectionViewCell.xib */,
+				781FF89827633CA7002B0820 /* SelectEmojiViewController.h */,
+				781FF89927633CA7002B0820 /* SelectEmojiViewController.m */,
 			);
 			path = test1;
 			sourceTree = "<group>";
@@ -278,6 +296,7 @@
 				78417063275B04A000B85914 /* LaunchScreen.storyboard in Resources */,
 				78417060275B04A000B85914 /* Assets.xcassets in Resources */,
 				7841705E275B049E00B85914 /* Main.storyboard in Resources */,
+				781FF89727633BFE002B0820 /* EmojiCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +322,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7841708F275B05F200B85914 /* pinyin.c in Sources */,
+				781FF89627633BFE002B0820 /* EmojiCollectionViewCell.m in Sources */,
+				781FF89A27633CA7002B0820 /* SelectEmojiViewController.m in Sources */,
 				7841705B275B049E00B85914 /* ViewController.m in Sources */,
 				7841708C275B057900B85914 /* MyContact.m in Sources */,
 				78417055275B049E00B85914 /* AppDelegate.m in Sources */,
@@ -310,6 +331,7 @@
 				784A3AF1275B452D0044FE09 /* MainViewController.m in Sources */,
 				78417066275B04A000B85914 /* main.m in Sources */,
 				78417058275B049E00B85914 /* SceneDelegate.m in Sources */,
+				781FF88D276338E3002B0820 /* EmojiModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
