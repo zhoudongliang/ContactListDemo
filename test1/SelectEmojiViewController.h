@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,retain) NSMutableArray * dataArray;
 @property (nonatomic,retain) NSMutableArray * btnArray;
 
+@property (strong , nonatomic) NSIndexPath * m_lastAccessed;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -14,4 +14,20 @@
     // Initialization code
 }
 
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    
+    //NSLog(@"aaa");
+    
+      if (selected) {
+          NSLog(@"aa");
+           self.layer.backgroundColor = [[UIColor redColor] CGColor];
+      } else {
+          NSLog(@"bb");
+           self.layer.backgroundColor = [[UIColor blueColor] CGColor];
+    }
+}
+
 @end
