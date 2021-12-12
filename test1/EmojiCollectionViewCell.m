@@ -12,22 +12,23 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    [self.selectImage setHidden:YES];
 }
-
 
 - (void)setSelected:(BOOL)selected
 {
+    NSLog(@"000");
     [super setSelected:selected];
-    
-    //NSLog(@"aaa");
-    
-      if (selected) {
-          NSLog(@"aa");
-           self.layer.backgroundColor = [[UIColor redColor] CGColor];
-      } else {
-          NSLog(@"bb");
-           self.layer.backgroundColor = [[UIColor blueColor] CGColor];
+    if (selected) {
+        [self.selectImage setHidden:NO];
+    } else {
+        [self.selectImage setHidden:YES];
+        
     }
+}
+
+- (void)aa {
+    [self setSelected:YES];
 }
 
 @end

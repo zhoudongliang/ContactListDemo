@@ -97,6 +97,21 @@
 //全选
 - (void) selectAllContact {
     NSLog(@"全选");
+    
+    NSArray *anArrayOfIndexPath = [NSArray arrayWithArray:[self.collectionView indexPathsForVisibleItems]];
+    
+    for (int i = 0; i < 1; i++)
+        {
+            NSIndexPath *indexPath = [anArrayOfIndexPath objectAtIndex:i];
+            EmojiCollectionViewCell * cell = (EmojiCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
+
+            //[cell setSelected:YES];
+            
+            [cell aa];
+            
+            [self collectionView:self.collectionView shouldSelectItemAtIndexPath:indexPath];
+            
+        }
    
 }
 //取消
@@ -122,9 +137,7 @@
     //[layout setItemSize:CGSizeMake(100, 100)];//不用这个了
     self.collectionView = [[UICollectionView alloc] initWithFrame:rect collectionViewLayout:layout];
 
-    
     [self.collectionView registerNib:[UINib nibWithNibName:@"EmojiCollectionViewCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"emojicell"];
-    
     
     //创建collectionview时设置多选
     self.collectionView.allowsMultipleSelection = YES;
@@ -158,18 +171,18 @@
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    //NSLog(@"shouldDeselectItemAtIndexPath");
+    NSLog(@"shouldDeselectItemAtIndexPath");
     
     return YES;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+    NSLog(@"shouldSelectItemAtIndexPath");
     return YES;
 }
 
 - (void)performBatchUpdates:(void (^ __nullable)(void))updates completion:(void (^ __nullable)(BOOL finished))completion {
-    //NSLog(@"performBatchUpdates");
+    NSLog(@"performBatchUpdates");
     
 }
 

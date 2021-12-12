@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,24 +23,45 @@
                         <rect key="frame" x="0.0" y="-1" width="90" height="91"/>
                         <color key="tintColor" systemColor="systemOrangeColor"/>
                     </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="r83-oD-iON">
+                        <rect key="frame" x="64" y="64.5" width="26" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="26" id="4u3-8W-2WT"/>
+                            <constraint firstAttribute="width" constant="26" id="a2J-3W-KhO"/>
+                        </constraints>
+                        <imageReference key="image" image="checkmark.circle.fill" catalog="system" renderingMode="hierarchical">
+                            <hierarchicalColors>
+                                <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color systemColor="linkColor"/>
+                                <color systemColor="linkColor"/>
+                            </hierarchicalColors>
+                        </imageReference>
+                    </imageView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="r83-oD-iON" secondAttribute="bottom" id="0s1-Yc-aKe"/>
                 <constraint firstItem="oA4-kg-R1U" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="B94-Ii-rVb"/>
                 <constraint firstAttribute="bottom" secondItem="oA4-kg-R1U" secondAttribute="bottom" id="Ojs-Dx-meO"/>
+                <constraint firstAttribute="trailing" secondItem="r83-oD-iON" secondAttribute="trailing" id="lv6-b0-N5v"/>
                 <constraint firstItem="oA4-kg-R1U" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="pSj-TJ-NFD"/>
                 <constraint firstAttribute="trailing" secondItem="oA4-kg-R1U" secondAttribute="trailing" id="xrZ-Ar-LpN"/>
             </constraints>
             <size key="customSize" width="90" height="86"/>
             <connections>
                 <outlet property="emojiImageView" destination="oA4-kg-R1U" id="GQx-vA-bAz"/>
+                <outlet property="selectImage" destination="r83-oD-iON" id="qcI-3G-Zha"/>
             </connections>
             <point key="canvasLocation" x="160.86956521739131" y="91.741071428571431"/>
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
