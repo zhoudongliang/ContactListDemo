@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIImageView *emojiImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *selectImage;
 
--(void) aa;
 
 @end
 

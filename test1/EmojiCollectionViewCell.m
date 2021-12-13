@@ -17,18 +17,14 @@
 
 - (void)setSelected:(BOOL)selected
 {
-    NSLog(@"000");
     [super setSelected:selected];
+    
     if (selected) {
         [self.selectImage setHidden:NO];
     } else {
         [self.selectImage setHidden:YES];
         
     }
-}
-
-- (void)aa {
-    [self setSelected:YES];
 }
 
 @end
