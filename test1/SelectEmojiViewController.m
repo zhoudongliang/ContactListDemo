@@ -53,7 +53,7 @@
     
     
     self.dataArray = [[NSMutableArray alloc] init];
-    
+    self.selectedDataArray = [[NSMutableArray alloc] init];
     
     [self loadData];
     
@@ -62,7 +62,7 @@
 }
 
 - (void) loadData {
-    NSArray * array = @[@"😁",@"🐴",@"💰",@"🏃🏻‍♀️",@"🪝",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🌲",@"😓",@"💰",@"🏃🏻‍♀️",@"🪝",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🌲",@"😓"];
+    NSArray * array = @[@"😁",@"🐴",@"💰",@"🏃🏻‍♀️",@"🪝",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🌲",@"😓",@"💰",@"🏃🏻‍♀️",@"🪝",@"🎂",@"👁",@"😍",@"😭",@"😎",@"📚",@"🌲",@"😓"];
     
     for (int i=0;i<array.count; i++) {
         EmojiModel *em = [[EmojiModel alloc] init];
@@ -74,21 +74,23 @@
 
 //全选
 - (void) selectAllContact {
-    NSLog(@"全选");
+    //只要是全选,或者全部取消权限,都得重置被选中的数据
+    [self.selectedDataArray removeAllObjects];
     
-    NSArray *anArrayOfIndexPath = [NSArray arrayWithArray:[self.collectionView indexPathsForVisibleItems]];
+    //NSArray *anArrayOfIndexPath = [NSArray arrayWithArray:[self.collectionView indexPathsForVisibleItems]];//这只是当前页
     
-    for (int i = 0; i < anArrayOfIndexPath.count; i++)
+    for (int i = 0; i < self.dataArray.count; i++)
         {
-            NSIndexPath *indexPath = [anArrayOfIndexPath objectAtIndex:i];
+            NSIndexPath * indexPath = [NSIndexPath indexPathForRow:i inSection:0];
             EmojiCollectionViewCell * cell = (EmojiCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
 
             if (self.isSelectAll) {
                 [cell setSelected:YES];
                 //这里需要设置被选中的Item，否则处于“非选中”的Item是无法触发，shouleSelected 和 DeSelected 代理方法的，就是选中后，就无法取消选中了
-                if (cell.selected) {
-                    [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-                }
+                [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+                //放到选中的数组里
+                [self.selectedDataArray addObject:self.dataArray[i]];//取消的时候就不管了,因上面是先清空
+                
             }else{
                 [cell setSelected:NO];
                 [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
@@ -103,6 +105,14 @@
         //设置右侧按钮
         [self setRightButtonView:@"取消" text2:@"确定"];
     }
+    /*
+    NSLog(@"---------------------");
+    for (int i=0; i<self.selectedDataArray.count; i++) {
+        EmojiModel * em = self.selectedDataArray[i];
+        NSLog(@"+++++%@",em.emojiImageString);
+    }
+    NSLog(@"---------------------");
+    */
 }
 //取消
 - (void) cancel {
@@ -194,14 +204,39 @@
     
 }
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    //NSLog(@"shouldDeselectItemAtIndexPath");
-    
+//选中某项
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    //放到选中的数组里
+    if (indexPath.item < self.dataArray.count) {
+        [self.selectedDataArray addObject:self.dataArray[indexPath.item]];//取消的时候就不管了,因上面是先清空
+    }
+    /*
+    NSLog(@"---------------------");
+    for (int i=0; i<self.selectedDataArray.count; i++) {
+        EmojiModel * em = self.selectedDataArray[i];
+        NSLog(@"+++++%@",em.emojiImageString);
+    }
+    NSLog(@"---------------------");
+     */
     return YES;
 }
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    //NSLog(@"shouldSelectItemAtIndexPath");
+//取消选中某项
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    //从数组中删除选中的那个
+    if (indexPath.item < self.dataArray.count) {
+        EmojiModel * em = self.dataArray[indexPath.item];
+        [self.selectedDataArray removeObject:em];
+        
+    }
+    /*
+    NSLog(@"---------------------");
+    for (int i=0; i<self.selectedDataArray.count; i++) {
+        EmojiModel * em = self.selectedDataArray[i];
+        NSLog(@"-----%@",em.emojiImageString);
+    }
+    NSLog(@"---------------------");
+    */
     return YES;
 }
 
