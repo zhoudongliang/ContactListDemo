@@ -54,11 +54,8 @@
     
     self.dataArray = [[NSMutableArray alloc] init];
     self.selectedDataArray = [[NSMutableArray alloc] init];
-    
-    [self loadData];
-    
+ 
     [self createCollectionView];
-    
 }
 
 - (void) loadData {
@@ -178,6 +175,12 @@
     
     [self.view addSubview:self.collectionView];
     
+    //[self loadData];//这是一个耗时操作!!! 考虑怎么开新线程执行
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self loadData];
+        [self.collectionView reloadData];
+        
+    });
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -191,8 +194,7 @@
     
     EmojiModel * em = self.dataArray[indexPath.item];//套娃第一层
     NSString * emojiImageString = em.emojiImageString;//套娃第二层
-    UIImage * emojiImage = [self imageForText:emojiImageString bgColor:[UIColor systemGray5Color] canvasSize:60.0];//这个背景色后面要改成动态的
-    [cell.emojiImageView setImage:emojiImage];
+    [cell setImageSting:emojiImageString];//在cell里面转成图片
     cell.emojiImageView.layer.masksToBounds = YES;
     cell.emojiImageView.layer.cornerRadius = 28;//头像设置成圆形
     
